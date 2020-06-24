@@ -15,6 +15,10 @@ script.on_event(defines.events.on_player_pipette, function(ev)
     if not player.selected.valid then
       log("Player has invalid entity selected")
     end
+    if not player.selected.unit_number then
+      log("Player has an entity without a unit number selected")
+      return
+    end
 
     if not global.pipette then global.pipette = {} end
     global.pipette[ev.player_index] = {}
@@ -54,7 +58,7 @@ end)
 
 script.on_event(defines.events.on_put_item, function(ev)
   if not global.over_ghost then global.over_ghost = {} end
-  if game.players[ev.player_index].selected then
+  if game.players[ev.player_index].selected and game.players[ev.player_index].selected.unit_number then
     log("Player " .. ev.player_index .. " about to build over something")
     global.over_ghost[ev.player_index] = true
   else
